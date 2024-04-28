@@ -106,43 +106,45 @@ def predict_knn():
     try:
         # 检查是否有文件且是否为图片
         file = request.files['image']
-        if file and 'image' in file.content_type:
-            filestr = file.read()
-            npimg = np.frombuffer(filestr, np.uint8)
-            image = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
+        # if file and 'image' in file.content_type:
+        filestr = file.read()
+        npimg = np.frombuffer(filestr, np.uint8)
+        image = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
 
-            # 确保图像被调整到与模型训练时相同的尺寸
-            image = cv2.resize(image, (128, 128))
-            image = image.reshape(1, -1)
-            image = image / 255.0  # 归一化
+        # 确保图像被调整到与模型训练时相同的尺寸
+        image = cv2.resize(image, (128, 128))
+        image = image.reshape(1, -1)
+        image = image / 255.0  # 归一化
 
-            prediction = knn.predict(image)
-            return jsonify({'prediction': int(prediction[0])})
-        else:
-            return jsonify({'error': 'No image or incorrect file type'}), 400
+        prediction = knn.predict(image)
+        return jsonify({'prediction': int(prediction[0])})
+        # else:
+        #     return jsonify({'error': 'No image or incorrect file type'}), 400
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-    
+
+
+
 @app.route('/predict_rf',methods = ['post'])
 def predict_rf():
     try:
         # 检查是否有文件且是否为图片
         file = request.files['image']
-        if file and 'image' in file.content_type:
-            filestr = file.read()
-            npimg = np.frombuffer(filestr, np.uint8)
-            image = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
+        # if file and 'image' in file.content_type:
+        filestr = file.read()
+        npimg = np.frombuffer(filestr, np.uint8)
+        image = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
 
 
-            image = cv2.resize(image, (128, 128))
-            image = image.reshape(1, -1)
-            image = image / 255.0  # 归一化
+        image = cv2.resize(image, (128, 128))
+        image = image.reshape(1, -1)
+        image = image / 255.0  # 归一化
 
-            prediction = rf.predict(image)
-            return jsonify({'prediction': int(prediction[0])})
-        else:
-            return jsonify({'error': 'No image or incorrect file type'}), 400
+        prediction = rf.predict(image)
+        return jsonify({'prediction': int(prediction[0])})
+        # else:
+        #     return jsonify({'error': 'No image or incorrect file type'}), 400
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -153,4 +155,4 @@ def predict_rf():
 
 # 启动应用
 if __name__ == '__main__':
-    app.run(host="127.0.0.1",port=8081)
+    app.run(host="127.0.0.1",port=8082)
